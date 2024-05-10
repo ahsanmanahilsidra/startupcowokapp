@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "32376776982",
+    "project_id": "startupcoworksapp",
+    "storage_bucket": "startupcoworksapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32376776982:android:798edab0f1314c765dc837",
+        "android_client_info": {
+          "package_name": "com.example.starupcowokapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-d_yZrQthns-O3DehZ0qPPfUL7Vs1Deg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

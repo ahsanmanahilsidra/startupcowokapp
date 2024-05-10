@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="blue">#2196F3</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="white_light">#F1F8F8</color>
+    <color name="frost_start">#000428</color>
+    <color name="frost_end">#004e92</color>
+    <color name="endless_river_start">#43cea2</color>
+    <color name="endless_river_end">#185a9d</color>
+    <color name="dark_orang">#A14D0B</color>
+    <color name="grey">#4D4E4E</color>
+    <color name="orange"> #ff8800</color>
+    <color name="light_orange">   #ffa500</color>
+    <color name="light_white">#BDBDBD</color>
+    <color name="textcolor">#9E9E9E</color>
+
+
+
+
+</resources>

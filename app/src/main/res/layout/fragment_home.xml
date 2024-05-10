@@ -1,0 +1,94 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerlayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="Fragments.Home"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    tools:openDrawer="start">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="18dp"
+            android:fontFamily="monospace"
+            android:text="Spaces"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="18dp"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/baseline_location_on_24"
+            android:text="location"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:background="@drawable/background_input"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="5dp"
+        app:queryBackground="@color/white_light"
+        android:backgroundTint="@color/white_light"
+        app:queryHint="Serch"
+        />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/Tablayout"
+        android:layout_width="match_parent"
+        app:tabIndicatorHeight="2dp"
+        app:tabIndicatorColor="#F57C00"
+        app:tabIconTintMode="multiply"
+        app:tabSelectedTextColor="@color/orange"
+        android:background="@android:color/transparent"
+        app:tabMode="fixed"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Space" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:text="Event" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Posts" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpager"
+        android:background="@color/white_light"
+        android:backgroundTint="@color/white_light"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

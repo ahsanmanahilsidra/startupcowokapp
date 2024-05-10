@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/Showbookings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="My Bookings" />
+        <item
+            android:id="@+id/Markattandece"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="Atttandence" />
+    </group>
+    <item android:title="Account Setting">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/changeemail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:title="Change Email" />
+                <item
+                    android:id="@+id/changepassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:title="Change Password" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="Account">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/Log_Out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:title="Loug Out" />
+            </group>
+        </menu>
+    </item>
+</menu>
