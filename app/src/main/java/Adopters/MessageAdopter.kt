@@ -36,7 +36,7 @@ class MessageAdopter (var context: Context, var messagelist: ArrayList<user>):Re
         holder.binding.Name.setText(messagelist.get(position).Name)
         holder.binding.email.setText(messagelist.get(position).Email)
         holder.binding.contect.setText(messagelist.get(position).Phone_number)
-        holder.binding.message.setOnClickListener(View.OnClickListener {
+        holder.binding.comunity.setOnClickListener(View.OnClickListener {
             openWhatsAppChat(context,messagelist.get(position).Phone_number.toString())
         })
     }

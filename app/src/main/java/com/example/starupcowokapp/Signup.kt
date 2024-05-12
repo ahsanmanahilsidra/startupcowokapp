@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.starupcowokapp.databinding.ActivitySignupBinding
@@ -53,6 +54,7 @@ class Signup : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
         binding.loginTextview.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this, Login::class.java))
@@ -196,6 +198,8 @@ class Signup : AppCompatActivity() {
                         user.Date_of_birth = binding.dob.text.toString()
                         user.Phone_number= binding.phoneNumber.text.toString()
                         user.Image=imgulr.toString()
+                        user.role="User"
+                        user.userid=Firebase.auth.currentUser!!.uid
                         Firebase.firestore.collection(user_node)
                             .document(Firebase.auth.currentUser!!.uid).set(user)
                             .addOnCompleteListener {

@@ -1,5 +1,6 @@
 package Adopters
 
+import Fragments.Addpost
 import Fragments.Change_email
 import Fragments.Comments
 import Fragments.showimg
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starupcowokapp.R
@@ -63,7 +65,7 @@ class PostAdapter(
         Picasso.get().load(postlist.get(position).posturl).placeholder(R.drawable.loading)
             .into(holder.binding.postimg)
         holder.binding.discription.setText(postlist.get(position).caption)
-        var checklike=false
+        var checklike = false
         // Define a SharedPreferences variable
         val sharedPreferences = context.getSharedPreferences("like_status", Context.MODE_PRIVATE)
 
@@ -74,17 +76,21 @@ class PostAdapter(
 
         holder.binding.like.setOnClickListener(View.OnClickListener {
             if (!isLiked) {
-                var likeid = Firebase.firestore.collection("Like").document().id // Use id instead of toString()
-                var like: Like = Like(likeid, Firebase.auth.currentUser!!.uid, postlist[position].postid)
+                var likeid = Firebase.firestore.collection("Like")
+                    .document().id // Use id instead of toString()
+                var like: Like =
+                    Like(likeid, Firebase.auth.currentUser!!.uid, postlist[position].postid)
                 Firebase.firestore.collection("Like").document(likeid).set(like)
                     .addOnSuccessListener {
                         // Update the like status in SharedPreferences
-                        sharedPreferences.edit().putBoolean("liked_${postlist[position].postid}", true).apply()
+                        sharedPreferences.edit()
+                            .putBoolean("liked_${postlist[position].postid}", true).apply()
                         holder.binding.like.setImageResource(R.drawable.readheart)
                     }
                 isLiked = true
             } else {
-                Firebase.firestore.collection("Like").whereEqualTo("userid", Firebase.auth.currentUser!!.uid)
+                Firebase.firestore.collection("Like")
+                    .whereEqualTo("userid", Firebase.auth.currentUser!!.uid)
                     .whereEqualTo("postid", postlist[position].postid)
                     .get()
                     .addOnSuccessListener { querySnapshot ->
@@ -92,7 +98,9 @@ class PostAdapter(
                             db.collection("Like").document(document.id).delete()
                                 .addOnSuccessListener {
                                     // Update the like status in SharedPreferences
-                                    sharedPreferences.edit().putBoolean("liked_${postlist[position].postid}", false).apply()
+                                    sharedPreferences.edit()
+                                        .putBoolean("liked_${postlist[position].postid}", false)
+                                        .apply()
                                     holder.binding.like.setImageResource(R.drawable.heart)
                                 }
                         }
@@ -107,7 +115,7 @@ class PostAdapter(
             dialogFragment.show(fragmentManager, "CommentsDialog")
 
         })
-        Firebase.firestore.collection("Like").whereEqualTo("postid",postlist.get(position).postid)
+        Firebase.firestore.collection("Like").whereEqualTo("postid", postlist.get(position).postid)
             .addSnapshotListener() { querySnapshot, firebaseFirestoreException ->
                 if (firebaseFirestoreException != null) {
                     // Handle error
@@ -115,11 +123,11 @@ class PostAdapter(
                 }
 
                 querySnapshot?.let { snapshot ->
-                    var count =0
+                    var count = 0
                     for (document in snapshot.documents) {
                         count++
                     }
-                 holder.binding.likeamount.setText(count.toString())
+                    holder.binding.likeamount.setText(count.toString())
                 }
             }
 
@@ -130,11 +138,26 @@ class PostAdapter(
 
         })
         holder.binding.delet.setOnClickListener(View.OnClickListener {
-            FirebaseFirestore.getInstance().collection("post").document(postlist[position].postid).delete()
+            FirebaseFirestore.getInstance().collection("Post").document(postlist[position].postid)
+                .delete().addOnSuccessListener {
+                    Toast.makeText(context,"deleted sucessfully",Toast.LENGTH_SHORT).show()
+                }
         })
         holder.binding.edit.setOnClickListener(View.OnClickListener {
-
+            val postid = postlist[position].postid
+            val dialogFragment = Addpost.newInstance(postid)
+            dialogFragment.show(fragmentManager, "AddpostDialog")
         })
+        holder.binding.delet.visibility=View.GONE
+        holder.binding.edit.visibility=View.GONE
+        FirebaseFirestore.getInstance().collection("user").document(Firebase.auth.currentUser!!.uid)
+            .get().addOnSuccessListener {
+                if (it.data!!["role"].toString()=="Admin"||postlist.get(position).userid==Firebase.auth.currentUser!!.uid)
+                {
+                    holder.binding.delet.visibility = View.VISIBLE
+                    holder.binding.edit.visibility = View.VISIBLE
+                }
+            }
     }
 
 

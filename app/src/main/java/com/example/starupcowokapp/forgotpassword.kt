@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import com.example.starupcowokapp.databinding.ActivityAccountDetailBinding
 import com.example.starupcowokapp.databinding.ActivityForgotpasswordBinding
 import com.google.firebase.Firebase
@@ -16,6 +17,7 @@ class forgotpassword : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
 
         binding.resepassword.setOnClickListener(View.OnClickListener {

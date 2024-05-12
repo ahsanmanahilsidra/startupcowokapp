@@ -10,7 +10,7 @@
     android:layout_height="wrap_content">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:id="@+id/message"
+    android:id="@+id/comunity"
     android:layout_height="150dp">
 
 

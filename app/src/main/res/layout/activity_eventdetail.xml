@@ -6,12 +6,13 @@
     android:background="@color/white"
     android:layout_height="match_parent"
     tools:context=".Eventdetail">
+
     <ImageView
         android:id="@+id/imges"
         android:layout_width="418dp"
         android:layout_height="233dp"
-        app:layout_constraintEnd_toEndOf="parent"
         android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/backgrounds/scenic" />

@@ -50,6 +50,18 @@ import constants.user_post_directory
 
 class profile : Fragment() {
     private var camerapermition:ActivityResultLauncher<String>?=null
+    private lateinit var id:String
+    override fun onStart() {
+        super.onStart()
+        bindingFragment.Attendance.visibility=View.GONE
+        FirebaseFirestore.getInstance().collection("user").document(Firebase.auth.currentUser!!.uid)
+            .get().addOnSuccessListener {
+                if (it.data!!["role"].toString()=="Admin"||it.data!!["role"].toString()=="Employee")
+                {
+                    bindingFragment.Attendance.visibility = View.VISIBLE
+                }
+            }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -60,9 +72,16 @@ class profile : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): ConstraintLayout {
-
+        val userId = arguments?.getString("userid")
+        if (userId!=null){
+            id=userId.toString()
+        }
+        else{
+            id=Firebase.auth.currentUser!!.uid.toString()
+        }
         bindingFragment = FragmentProfileBinding.inflate(layoutInflater, container, false)
-        Firebase.firestore.collection(user_node).document(Firebase.auth.currentUser!!.uid).get()
+
+        Firebase.firestore.collection(user_node).document(id).get()
             .addOnSuccessListener {
                 if (it!= null) {
                     Picasso.get().load(it.data!!["image"].toString()).placeholder(R.drawable.profile)
@@ -106,7 +125,9 @@ class profile : Fragment() {
             dialogFragment.show(parentFragmentManager, "MyDialogFragmentTag")
         })
         bindingFragment.Acoountdetails.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context,Account_detail::class.java))
+           val intent:Intent=Intent(context,Account_detail()::class.java)
+            intent.putExtra("userid",id)
+            context?.startActivity(intent)
         })
         bindingFragment.mybookings.setOnClickListener(View.OnClickListener {
             Toast.makeText(context,"No Bookings",Toast.LENGTH_SHORT).show()

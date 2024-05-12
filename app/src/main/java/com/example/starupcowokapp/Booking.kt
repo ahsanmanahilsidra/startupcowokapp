@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import com.example.starupcowokapp.databinding.ActivityBookingBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
@@ -15,6 +16,7 @@ class Booking : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
         val id = intent.getStringExtra("id")
         FirebaseFirestore.getInstance().collection("space").document(id.toString()).get().addOnSuccessListener {

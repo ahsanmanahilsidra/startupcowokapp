@@ -10,6 +10,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.view.SurfaceHolder
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import com.example.starupcowokapp.databinding.ActivityScanerBinding
 import com.google.android.gms.vision.CameraSource
@@ -39,7 +40,9 @@ class Scaner : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
 
     }

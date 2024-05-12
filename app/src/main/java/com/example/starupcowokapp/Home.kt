@@ -5,6 +5,7 @@ import Fragments.profile
 import Fragments.Community
 import Fragments.Home
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,6 +22,7 @@ class Home : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
         replacefragment(Fragments.Home())
         binding.bottombar.setOnItemSelectedListener {

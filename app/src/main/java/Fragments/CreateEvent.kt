@@ -84,6 +84,28 @@ class CreateEvent : DialogFragment() {
                     }
 
             }
+            else{
+                if (bindingFragment.title.text.toString()==""|| bindingFragment.discription.text.toString()=="")
+                {
+                    Toast.makeText(context,"Title and decription will not be empety",Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    val event: Event = Event(
+                        bindingFragment.title.text.toString(),
+                        bindingFragment.discription.text.toString(),
+                        bindingFragment.dateandtime.text.toString(),
+                        bindingFragment.location.text.toString(),
+                        bindingFragment.eventtype.text.toString(),
+                        id.toString()
+
+                    )
+                    Firebase.firestore.collection("Event").document(id).set(event)
+                        .addOnSuccessListener() {
+                            dialog?.dismiss()
+                        }
+                }
+            }
+
         }
 
 

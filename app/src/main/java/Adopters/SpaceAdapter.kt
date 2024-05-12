@@ -6,11 +6,13 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starupcowokapp.Booking
 import com.example.starupcowokapp.R
 import com.example.starupcowokapp.databinding.SpaceHolderBinding
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firestore.admin.v1.Index
 import com.squareup.picasso.Picasso
 
@@ -37,6 +39,12 @@ class SpaceAdapter(var context: Context, var spacelist: ArrayList<Space>):Recycl
             val intent=Intent(context,Booking::class.java)
             intent.putExtra("id",spacelist.get(position).spaceid)
             context.startActivity(intent)
+        })
+        holder.binding.delet2.setOnClickListener(View.OnClickListener {
+            FirebaseFirestore.getInstance().collection("space").document(spacelist[position].spaceid)
+                .delete().addOnSuccessListener {
+                    Toast.makeText(context,"deleted sucessfully", Toast.LENGTH_SHORT).show()
+                }
         })
 
     }

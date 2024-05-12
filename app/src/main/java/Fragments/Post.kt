@@ -16,6 +16,9 @@ import constants.user_post_directory
 
 
 class Post : Fragment() {
+    override fun onStart() {
+        super.onStart()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var postList = ArrayList<post>()

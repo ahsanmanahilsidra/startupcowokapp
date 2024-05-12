@@ -6,6 +6,7 @@ import Models.Attandence
 import Models.user
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.starupcowokapp.databinding.ActivityMyAttandenceBinding
 import com.example.starupcowokapp.databinding.FragmentCommunityBinding
@@ -23,6 +24,7 @@ class MyAttandence : AppCompatActivity() {
             ActivityMyAttandenceBinding.inflate(layoutInflater)
         }
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContentView(binding.root)
         adapter= AttandenceAdapter(this,AttandenceList)
         binding.recyclerView.layoutManager=

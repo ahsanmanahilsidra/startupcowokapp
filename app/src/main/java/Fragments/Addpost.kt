@@ -12,8 +12,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.DialogFragment
+import com.example.starupcowokapp.Home
 import com.example.starupcowokapp.R
 import com.example.starupcowokapp.databinding.FragmentAddpostBinding
 import com.example.starupcowokapp.databinding.FragmentProfileBinding
@@ -24,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import com.squareup.picasso.Picasso
 import constants.user_post_directory
 import uploadImage
 import utils.createnotification
@@ -34,13 +37,22 @@ class Addpost : DialogFragment() {
     private val REQUEST_IMAGE_CAPTURE = 1
     private var imageUri: Uri? = null
     private lateinit var bindingFragment: FragmentAddpostBinding
+    var postid = arguments?.getString("postid")
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-
+        if (postid != null) {
+            bindingFragment.title.setText("Edit Post")
+            FirebaseFirestore.getInstance().collection("Post").document(postid.toString()).get()
+                .addOnSuccessListener {
+                    Picasso.get().load(it.data!!["posturl"].toString()).placeholder(R.drawable.loading)
+                        .into(bindingFragment.Img)
+                    bindingFragment.discription.setText(it.data!!["caption"].toString())
+                }
+        }
     }
 
 
@@ -48,7 +60,7 @@ class Addpost : DialogFragment() {
     private val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             bindingFragment.Img.setImageResource(R.drawable.loading)
-            uploadImage(requireContext(),uri, user_post_directory) {
+            uploadImage(requireContext(), uri, user_post_directory) {
 
                 if (it != null) {
                     bindingFragment.Img.setImageURI(uri)
@@ -74,31 +86,66 @@ class Addpost : DialogFragment() {
         })
 
         bindingFragment.post.setOnClickListener() {
-            if (imgulr != null) {
-                val Postid =
-                    FirebaseFirestore.getInstance().collection(user_post_directory).document().id
-                val userpost: post = post(imgulr!!, bindingFragment.discription.text.toString())
-                val post:post=post(imgulr!!,bindingFragment.discription.text.toString(),Firebase.auth.currentUser!!.uid,System.currentTimeMillis().toString(),Postid)
+
+            if (postid==null) {
+                if (imgulr != null) {
+                    val Postid =
+                        FirebaseFirestore.getInstance().collection(user_post_directory)
+                            .document().id
+                    val userpost: post = post(imgulr!!, bindingFragment.discription.text.toString())
+                    val post: post = post(
+                        imgulr!!,
+                        bindingFragment.discription.text.toString(),
+                        Firebase.auth.currentUser!!.uid,
+                        System.currentTimeMillis().toString(),
+                        Postid
+                    )
 
 
-                Firebase.firestore.collection(user_post_directory).document(Postid).set(post)
-                    .addOnSuccessListener() {
+                    Firebase.firestore.collection(user_post_directory).document(Postid).set(post)
+                        .addOnSuccessListener() {
 
-                        Firebase.firestore.collection(Firebase.auth.currentUser!!.uid + "post")
-                            .document().set(userpost).addOnSuccessListener() {
-                                Firebase.firestore.collection("user").document(FirebaseAuth.getInstance().currentUser!!.uid).get().addOnSuccessListener {
-                                    if (it!=null){
-                                        var user = it.toObject<user>()!!
-                                        var name=user.Name.toString()
-                                        var img=user.Image.toString()
-                                        createnotification("Added post","${name}  Add a post","Home()",
-                                            "all",FirebaseAuth.getInstance().currentUser!!.uid,img)
-                                    }
+                            Firebase.firestore.collection(Firebase.auth.currentUser!!.uid + "post")
+                                .document().set(userpost).addOnSuccessListener() {
+                                    Firebase.firestore.collection("user")
+                                        .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                        .get()
+                                        .addOnSuccessListener {
+                                            if (it != null) {
+                                                var user = it.toObject<user>()!!
+                                                var name = user.Name.toString()
+                                                var img = user.Image.toString()
+                                                createnotification(
+                                                    "Added post",
+                                                    "${name}  Add a post",
+                                                    "Home()",
+                                                    "all",
+                                                    FirebaseAuth.getInstance().currentUser!!.uid,
+                                                    img
+                                                )
+                                            }
+                                        }
+
+
+                                    dialog?.dismiss()
                                 }
+                        }
+                }
+            }
+            else
+            {
+                val updates = hashMapOf<String, Any>(
+                    "caption" to bindingFragment.discription.text.toString(),
+                    "posturl" to imgulr.toString(),
+                )
+                FirebaseFirestore.getInstance().collection("Post").document(postid.toString()).update(updates)
+                    .addOnCompleteListener {
+                        startActivity(Intent(context,Post()::class.java))
+                        Toast.makeText(context, "Post updated", Toast.LENGTH_SHORT)
+                            .show();
 
+                        dialog?.dismiss()
 
-                                dialog?.dismiss()
-                            }
                     }
             }
 
@@ -115,9 +162,16 @@ class Addpost : DialogFragment() {
 
 
     companion object {
-
+        fun newInstance(postid: String): Addpost {
+            val fragment = Addpost()
+            val args = Bundle()
+            args.putString("postid", postid)
+            fragment.arguments = args
+            return fragment
+        }
 
     }
+
     private fun dispatchTakePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
@@ -131,7 +185,7 @@ class Addpost : DialogFragment() {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             imageUri = getImageUri(imageBitmap)
-            uploadImage(requireContext(),imageUri!!, user_post_directory) {
+            uploadImage(requireContext(), imageUri!!, user_post_directory) {
                 if (it != null) {
                     bindingFragment.Img.setImageURI(imageUri)
                     imgulr = it.toString()
@@ -145,7 +199,8 @@ class Addpost : DialogFragment() {
     private fun getImageUri(inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(context?.contentResolver, inImage, "Title", null)
+        val path =
+            MediaStore.Images.Media.insertImage(context?.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
     }
 

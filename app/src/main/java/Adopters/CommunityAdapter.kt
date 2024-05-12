@@ -2,9 +2,12 @@ package Adopters
 
 import Models.user
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.starupcowokapp.Account_detail
 import com.example.starupcowokapp.R
 import com.example.starupcowokapp.databinding.CommunityHolderBinding
 import com.example.starupcowokapp.databinding.SpaceHolderBinding
@@ -27,6 +30,12 @@ class CommunityAdapter (var context: Context, var communitylist: ArrayList<user>
         holder.binding.Name.setText(communitylist.get(position).Name)
         holder.binding.email.setText(communitylist.get(position).Email)
         holder.binding.contect.setText(communitylist.get(position).Phone_number)
+        holder.binding.comunity.setOnClickListener(View.OnClickListener {
+            val intent:Intent=Intent(context,Account_detail()::class.java)
+            intent.putExtra("userid",communitylist.get(position).userid)
+            context.startActivity(intent)
+        })
+
     }
 
     override fun getItemCount(): Int {

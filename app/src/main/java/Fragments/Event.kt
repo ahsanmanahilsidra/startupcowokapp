@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.starupcowokapp.databinding.FragmentEventBinding
 import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 
@@ -20,6 +22,15 @@ class Event : Fragment() {
     private lateinit var bindingFragment: FragmentEventBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bindingFragment.addevent.visibility=View.GONE
+
+        FirebaseFirestore.getInstance().collection("user").document(Firebase.auth.currentUser!!.uid)
+            .get().addOnSuccessListener {
+                if (it.data!!["role"].toString()=="Admin"||it.data!!["role"].toString()=="Employee")
+                {
+                    bindingFragment.addevent.visibility = View.VISIBLE
+                }
+            }
         var eventList = ArrayList<Event>()
         var adapter = EventAdopter(requireContext(), eventList)
         bindingFragment.recilerview.layoutManager =

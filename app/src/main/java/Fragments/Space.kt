@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.starupcowokapp.databinding.FragmentSpaceBinding
 import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.toObject
 
@@ -20,7 +22,14 @@ class Space : Fragment()  {
     public lateinit var adapter: SpaceAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+bindingFragment.addspace.visibility=View.GONE
+        FirebaseFirestore.getInstance().collection("user").document(Firebase.auth.currentUser!!.uid)
+            .get().addOnSuccessListener {
+                if (it.data!!["role"].toString()=="Admin"||it.data!!["role"].toString()=="Employee")
+                {
+                    bindingFragment.addspace.visibility = View.VISIBLE
+                }
+            }
         adapter= SpaceAdapter(requireContext(),spaceList)
         bindingFragment.recilerview.layoutManager=
             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)

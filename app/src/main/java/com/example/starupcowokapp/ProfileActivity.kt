@@ -1,6 +1,7 @@
 package com.example.starupcowokapp
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.starupcowokapp.databinding.ActivityProfileBinding
 import com.google.firebase.Firebase
@@ -16,6 +17,7 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        enableEdgeToEdge()
         val db = FirebaseFirestore.getInstance()
         val usersCollection = db.collection("user")
         usersCollection.document(Firebase.auth.currentUser!!.uid).get()
