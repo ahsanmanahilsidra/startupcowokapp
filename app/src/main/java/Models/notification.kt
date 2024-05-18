@@ -10,6 +10,7 @@ class notification {
     var foor:String=""
     var from:String=""
     var imgurl:String=""
+    var time:String=""
     constructor()
     constructor(
         notificationid: String,
@@ -19,6 +20,7 @@ class notification {
         foor: String,
         from: String,
         imgurl: String,
+        time: String,
     ) {
         this.notificationid = notificationid
         this.title = title
@@ -27,7 +29,7 @@ class notification {
         this.foor = foor
         this.from = from
         this.imgurl = imgurl
+        this.time = time
     }
-
 
 }

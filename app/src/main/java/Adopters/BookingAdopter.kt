@@ -24,11 +24,6 @@ class BookingAdopter(var context: Context, var bookinglist:ArrayList<Booking>):R
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Picasso.get().load(bookinglist.get(position).bookingurl).placeholder(R.drawable.loading).into(holder.binding.bookimg)
-        holder.binding.description.setText(bookinglist.get(position).bookingcaption)
-        holder.binding.price.setText(bookinglist.get(position).bookingpric)
-        holder.binding.seats.setText(bookinglist.get(position).seats)
-        holder.binding.title.setText(bookinglist.get(position).title)
 
     }
 }

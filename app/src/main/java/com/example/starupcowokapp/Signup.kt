@@ -54,7 +54,6 @@ class Signup : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
         binding.loginTextview.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this, Login::class.java))

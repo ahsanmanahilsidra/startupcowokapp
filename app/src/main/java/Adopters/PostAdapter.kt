@@ -143,11 +143,12 @@ class PostAdapter(
                     Toast.makeText(context,"deleted sucessfully",Toast.LENGTH_SHORT).show()
                 }
         })
-        holder.binding.edit.setOnClickListener(View.OnClickListener {
-            val postid = postlist[position].postid
-            val dialogFragment = Addpost.newInstance(postid)
-            dialogFragment.show(fragmentManager, "AddpostDialog")
-        })
+        holder.binding.edit.setOnClickListener {
+            val postId = postlist.get(position).postid
+            val dialogFragment = Addpost.newInstance(postId)
+            dialogFragment.show(fragmentManager, "YourDialogTag")
+
+        }
         holder.binding.delet.visibility=View.GONE
         holder.binding.edit.visibility=View.GONE
         FirebaseFirestore.getInstance().collection("user").document(Firebase.auth.currentUser!!.uid)

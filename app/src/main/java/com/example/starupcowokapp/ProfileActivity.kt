@@ -17,7 +17,7 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        enableEdgeToEdge()
+
         val db = FirebaseFirestore.getInstance()
         val usersCollection = db.collection("user")
         usersCollection.document(Firebase.auth.currentUser!!.uid).get()

@@ -14,7 +14,6 @@ class Eventdetail : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
         val id = intent.getStringExtra("id")
         FirebaseFirestore.getInstance().collection("Event").document(id.toString()).get().addOnSuccessListener {

@@ -120,20 +120,7 @@ class Home : Fragment(),NavigationView.OnNavigationItemSelectedListener{
 //                else -> false
 //            }
 //        }
-        val searchView=bindingFragment.searchView
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener,
-            androidx.appcompat.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filterList(newText)
-
-                return true
-            }
-
-        })
       askNotificationPermission()
         return bindingFragment.root
     }

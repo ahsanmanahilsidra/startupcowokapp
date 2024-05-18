@@ -3,6 +3,7 @@ package Fragments
 import Models.post
 import Models.user
 import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -37,22 +38,16 @@ class Addpost : DialogFragment() {
     private val REQUEST_IMAGE_CAPTURE = 1
     private var imageUri: Uri? = null
     private lateinit var bindingFragment: FragmentAddpostBinding
-    var postid = arguments?.getString("postid")
+
     override fun onStart() {
         super.onStart()
         dialog?.window?.setLayout(
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        if (postid != null) {
-            bindingFragment.title.setText("Edit Post")
-            FirebaseFirestore.getInstance().collection("Post").document(postid.toString()).get()
-                .addOnSuccessListener {
-                    Picasso.get().load(it.data!!["posturl"].toString()).placeholder(R.drawable.loading)
-                        .into(bindingFragment.Img)
-                    bindingFragment.discription.setText(it.data!!["caption"].toString())
-                }
-        }
+//
+
+//
     }
 
 
@@ -71,23 +66,40 @@ class Addpost : DialogFragment() {
         }
 
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val postId = arguments?.getString(ARG_POST_ID)
+        if (postId != null) {
+            bindingFragment.title.setText("Edit Post")
+            bindingFragment.post.setText("Update")
+            FirebaseFirestore.getInstance().collection("Post").document(postId.toString()).get()
+                .addOnSuccessListener {
+                    if (imgulr==null) {
+                        imgulr = it.data!!["posturl"].toString()
+                    }
+                    Picasso.get().load(it.data!!["posturl"].toString())
+                        .placeholder(R.drawable.loading)
+                        .into(bindingFragment.Img)
+                    bindingFragment.discription.setText(it.data!!["caption"].toString())
+                }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View? {
-        bindingFragment = FragmentAddpostBinding.inflate(inflater, container, false)
-        bindingFragment.picture.setOnClickListener(View.OnClickListener {
-            launcher.launch("image/*")
-        })
+            bindingFragment.post.setOnClickListener(View.OnClickListener {
+                val updates = hashMapOf<String, Any>(
+                    "posturl" to imgulr.toString(),
+                    "caption" to bindingFragment.discription.text.toString()
+                )
+                FirebaseFirestore.getInstance().collection("Post").document(postId.toString()).update(updates)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "updated", Toast.LENGTH_SHORT).show()
+                        dialog?.dismiss()
+                    }
+            })
 
-        bindingFragment.cross.setOnClickListener(View.OnClickListener {
-            dialog?.dismiss()
-        })
+        }
+        if (postId == null) {
+            bindingFragment.post.setOnClickListener() {
 
-        bindingFragment.post.setOnClickListener() {
 
-            if (postid==null) {
                 if (imgulr != null) {
                     val Postid =
                         FirebaseFirestore.getInstance().collection(user_post_directory)
@@ -132,24 +144,22 @@ class Addpost : DialogFragment() {
                         }
                 }
             }
-            else
-            {
-                val updates = hashMapOf<String, Any>(
-                    "caption" to bindingFragment.discription.text.toString(),
-                    "posturl" to imgulr.toString(),
-                )
-                FirebaseFirestore.getInstance().collection("Post").document(postid.toString()).update(updates)
-                    .addOnCompleteListener {
-                        startActivity(Intent(context,Post()::class.java))
-                        Toast.makeText(context, "Post updated", Toast.LENGTH_SHORT)
-                            .show();
 
-                        dialog?.dismiss()
-
-                    }
-            }
 
         }
+    }
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        bindingFragment = FragmentAddpostBinding.inflate(inflater, container, false)
+        bindingFragment.picture.setOnClickListener(View.OnClickListener {
+            launcher.launch("image/*")
+        })
+
+        bindingFragment.cross.setOnClickListener(View.OnClickListener {
+            dialog?.dismiss()
+        })
 
 
         bindingFragment.camera.setOnClickListener(View.OnClickListener {
@@ -162,16 +172,17 @@ class Addpost : DialogFragment() {
 
 
     companion object {
-        fun newInstance(postid: String): Addpost {
+
+        private const val ARG_POST_ID = "postId"
+
+        fun newInstance(postId: String): Addpost {
             val fragment = Addpost()
             val args = Bundle()
-            args.putString("postid", postid)
+            args.putString(ARG_POST_ID, postId)
             fragment.arguments = args
             return fragment
         }
-
     }
-
     private fun dispatchTakePictureIntent() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(requireContext().packageManager)?.also {

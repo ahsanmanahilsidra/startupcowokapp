@@ -28,7 +28,6 @@ class Account_detail : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
         binding.spinner.visibility = View.GONE
         val db = FirebaseFirestore.getInstance()

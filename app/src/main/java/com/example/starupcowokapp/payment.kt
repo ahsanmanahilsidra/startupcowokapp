@@ -10,7 +10,6 @@ import androidx.activity.enableEdgeToEdge
 class payment : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_payment)
         val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true

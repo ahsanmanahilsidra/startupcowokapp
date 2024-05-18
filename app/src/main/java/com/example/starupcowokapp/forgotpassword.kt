@@ -17,7 +17,6 @@ class forgotpassword : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
 
         binding.resepassword.setOnClickListener(View.OnClickListener {

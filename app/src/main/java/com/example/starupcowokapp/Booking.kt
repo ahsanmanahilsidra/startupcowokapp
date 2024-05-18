@@ -16,7 +16,6 @@ class Booking : AppCompatActivity() {
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
         val id = intent.getStringExtra("id")
         FirebaseFirestore.getInstance().collection("space").document(id.toString()).get().addOnSuccessListener {
@@ -30,7 +29,9 @@ class Booking : AppCompatActivity() {
             }
         }
         binding.book.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(this,payment::class.java))
+            val intent:Intent=Intent(this,paymentActivity::class.java)
+            intent.putExtra("spaceid",id.toString())
+            startActivity(intent)
         })
     }
 }

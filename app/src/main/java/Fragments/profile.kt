@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.starupcowokapp.Account_detail
 import com.example.starupcowokapp.Login
 import com.example.starupcowokapp.MyAttandence
+import com.example.starupcowokapp.MyBookings
 import com.example.starupcowokapp.R
 import com.example.starupcowokapp.Scaner
 import com.example.starupcowokapp.databinding.FragmentProfileBinding
@@ -130,18 +131,8 @@ class profile : Fragment() {
             context?.startActivity(intent)
         })
         bindingFragment.mybookings.setOnClickListener(View.OnClickListener {
-            Toast.makeText(context,"No Bookings",Toast.LENGTH_SHORT).show()
-            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w(TAG, "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
 
-                // Get new FCM registration token
-                val token = task.result
-                Log.d(TAG, token)
-
-            })
+          startActivity(Intent(context,MyBookings::class.java))
 
         })
  bindingFragment.Myattandence.setOnClickListener(View.OnClickListener {

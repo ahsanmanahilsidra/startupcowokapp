@@ -59,7 +59,18 @@ class notificatidficationAdopter(
 //                        .into(holder.binding.image)
 //                }
 //        }
-        holder.binding.title.setText(notificationlist.get(position).title)
+        if (notificationlist.get(position).from !="") {
+            FirebaseFirestore.getInstance().collection("user")
+                .document(notificationlist.get(position).from).get().addOnSuccessListener {
+            var name =it.data!!["name"].toString()
+                    holder.binding.name.setText(name)
+            }
+        }
+        else {
+            holder.binding.name.setText("You")
+        }
+
+       holder.binding.time.setText(notificationlist.get(position).time)
         holder.binding.message.setText(notificationlist.get(position).message)
         Picasso.get().load(notificationlist.get(position).imgurl).into(holder.binding.image)
         holder.binding.layout.setOnClickListener(View.OnClickListener {

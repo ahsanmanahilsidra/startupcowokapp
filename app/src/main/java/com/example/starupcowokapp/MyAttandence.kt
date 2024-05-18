@@ -24,7 +24,6 @@ class MyAttandence : AppCompatActivity() {
             ActivityMyAttandenceBinding.inflate(layoutInflater)
         }
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(binding.root)
         adapter= AttandenceAdapter(this,AttandenceList)
         binding.recyclerView.layoutManager=

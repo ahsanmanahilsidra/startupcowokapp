@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.starupcowokapp.Booking
 import com.example.starupcowokapp.R
 import com.example.starupcowokapp.databinding.SpaceHolderBinding
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firestore.admin.v1.Index
 import com.squareup.picasso.Picasso
@@ -33,6 +35,16 @@ class SpaceAdapter(var context: Context, var spacelist: ArrayList<Space>):Recycl
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.binding.delet2.visibility=View.GONE
+        holder.binding.edit2.visibility=View.GONE
+        FirebaseFirestore.getInstance().collection("user").document(Firebase.auth.currentUser!!.uid)
+            .get().addOnSuccessListener {
+                if (it.data!!["role"].toString()=="Admin"||it.data!!["role"].toString()=="Employee")
+                {
+                    holder.binding.delet2.visibility = View.VISIBLE
+                    holder.binding.edit2.visibility = View.VISIBLE
+                }
+            }
         Picasso.get().load(spacelist.get(position).Spaceurl).placeholder(R.drawable.loading).into(holder.binding.spaceimg)
         holder.binding.head.setText(spacelist.get(position).Spacetitle)
         holder.binding.spaceimg.setOnClickListener(View.OnClickListener {

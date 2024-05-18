@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -8,21 +9,24 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"
         android:resource="@drawable/logo" />
-    <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-         notification message. See README(https://goo.gl/6BKBk7) for more. -->
+    <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+         notification message. See README(https://goo.gl/6BKBk7) for more.
+    -->
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_color"
         android:resource="@color/orange" />
 
     <application
-
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -32,6 +36,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Starupcowokapp"
         tools:targetApi="31">
+        <activity
+            android:name=".MyBookings"
+            android:exported="false" />
+        <activity
+            android:name=".bookingcompleted"
+            android:exported="false" />
+        <activity
+            android:name=".paymentActivity"
+            android:exported="false" />
         <activity
             android:name=".forgotpassword"
             android:exported="false" />
@@ -86,6 +99,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
