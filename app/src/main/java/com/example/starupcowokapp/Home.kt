@@ -1,12 +1,11 @@
 package com.example.starupcowokapp
 
 import DeleteExpiredDocumentsWorker
-import Fragments.Notfication_chat
-import Fragments.profile
 import Fragments.Community
 import Fragments.Home
+import Fragments.Notfication_chat
+import Fragments.profile
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -15,46 +14,42 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.starupcowokapp.databinding.ActivityHomeBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.firestore
-import java.util.Calendar
+import markapsent
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class Home : AppCompatActivity() {
-    val binding by lazy {
+    private val binding by lazy {
         ActivityHomeBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        replacefragment(Fragments.Home())
-        scheduleDeleteExpiredDocumentsTask()
-        binding.bottombar.setOnItemSelectedListener {
+        replaceFragment(Home())
+        schedulePeriodicTasks()
+        setupBottomNavigationBar()
+    }
 
-
-            when (it.itemId) {
-                R.id.space -> replacefragment(Home())
-                R.id.Community -> replacefragment(Community())
-                R.id.notification -> replacefragment(Notfication_chat())
-                R.id.profile -> replacefragment(profile())
-                else
-
-                -> {
-
-                }
+    private fun setupBottomNavigationBar() {
+        binding.bottombar.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.space -> replaceFragment(Home())
+                R.id.Community -> replaceFragment(Community())
+                R.id.notification -> replaceFragment(Notfication_chat())
+                R.id.profile -> replaceFragment(profile())
             }
             true
         }
-
     }
 
-
-    fun replacefragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.frameLayout, fragment)
-            .addToBackStack(null).commit()
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.frameLayout, fragment)
+            .addToBackStack(null)
+            .commit()
     }
+
     override fun onBackPressed() {
         if (supportFragmentManager.backStackEntryCount > 1) {
             super.onBackPressed()
@@ -63,57 +58,45 @@ class Home : AppCompatActivity() {
         }
     }
 
-
     private fun showExitConfirmationDialog() {
-        val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setMessage("Are you sure you want to exit?")
-        alertDialogBuilder.setCancelable(false)
-        alertDialogBuilder.setPositiveButton("Yes") { dialog, _ ->
-            finishAffinity() // Close the app
-        }
-        alertDialogBuilder.setNegativeButton("No") { dialog, _ ->
-            dialog.dismiss() // Dismiss the dialog
-        }
-
-        val alertDialog = alertDialogBuilder.create()
-        alertDialog.show()
+        AlertDialog.Builder(this)
+            .setMessage("Are you sure you want to exit?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                finishAffinity() // Close the app
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss() // Dismiss the dialog
+            }
+            .create()
+            .show()
     }
-    private fun setBadgeCount(count: Int, bottomNavigationView: BottomNavigationView) {
-        // Get the menu item you want to add a badge to
-        val menuItem = bottomNavigationView.menu.findItem(R.id.notification)
 
-        // Create a BadgeDrawable
-        val badgeDrawable = bottomNavigationView.getOrCreateBadge(menuItem.itemId)
-
-        // Set badge count
-        badgeDrawable.number = count
-    }
-    private fun scheduleDeleteExpiredDocumentsTask() {
-        // Define the time at which you want the task to run every day (in this example, 3:00 AM)
+    private fun schedulePeriodicTasks() {
         val calendar = Calendar.getInstance().apply {
-            set(Calendar.HOUR_OF_DAY, 18)
-            set(Calendar.MINUTE, 43)
+            set(Calendar.HOUR_OF_DAY, 19) // Set the time to 7:00 PM for both tasks
+            set(Calendar.MINUTE, 49)
             set(Calendar.SECOND, 0)
         }
 
-        // Create a periodic work request to run the task daily
-        val deleteExpiredDocumentsRequest =
-            PeriodicWorkRequestBuilder<DeleteExpiredDocumentsWorker>(
-                1,
-                TimeUnit.DAYS
-            )
-                .setInitialDelay(
-                    calendar.timeInMillis - System.currentTimeMillis(),
-                    TimeUnit.MILLISECONDS
-                )
-                .build()
+        val deleteExpiredDocumentsRequest = PeriodicWorkRequestBuilder<DeleteExpiredDocumentsWorker>(
+            1, TimeUnit.DAYS
+        ).setInitialDelay(
+            calendar.timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS
+        ).build()
 
-        // Schedule the periodic work request
-        WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
-                "deleteExpiredDocumentsTask",
-                ExistingPeriodicWorkPolicy.REPLACE,
-                deleteExpiredDocumentsRequest
-            )
+        val markAttendanceRequest = PeriodicWorkRequestBuilder<markapsent>(
+            1, TimeUnit.DAYS
+        ).setInitialDelay(
+            calendar.timeInMillis - System.currentTimeMillis(), TimeUnit.MILLISECONDS
+        ).build()
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "deleteExpiredDocumentsTask", ExistingPeriodicWorkPolicy.REPLACE, deleteExpiredDocumentsRequest
+        )
+
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+            "markAttendanceTask", ExistingPeriodicWorkPolicy.REPLACE, markAttendanceRequest
+        )
     }
 }

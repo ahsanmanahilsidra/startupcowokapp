@@ -86,25 +86,39 @@ class paymentActivity : AppCompatActivity() {
         alertDialog.setPositiveButton("Confirm") { dialog, which ->
             FirebaseFirestore.getInstance().collection("Booking").whereEqualTo("spaceid", id)
                 .whereEqualTo("userid", Firebase.auth.currentUser!!.uid).get().addOnSuccessListener {
-                    if (it.isEmpty)
-                    {var bookingid = Firebase.firestore.collection("Bookings").document().id
-                        val booking: Booking = Booking(
-                            bookingid,
-                            Firebase.auth.currentUser!!.uid.toString(),
-                            id.toString(),
-                            name,
-                            currentdate,
-                            thidays,
-                            price
-                        )
-                        Firebase.firestore.collection("Booking").document(bookingid).set(booking)
+                    if (it.isEmpty) {
+                        FirebaseFirestore.getInstance().collection("space").document(id).get()
                             .addOnSuccessListener {
-                                startActivity(Intent(this, bookingcompleted::class.java))
-                            }
+                                if (it.data!!["avalabeleseats"].toString() != "0") {
 
+                                    var bookingid =
+                                        Firebase.firestore.collection("Bookings").document().id
+                                    val booking: Booking = Booking(
+                                        bookingid,
+                                        Firebase.auth.currentUser!!.uid.toString(),
+                                        id.toString(),
+                                        name,
+                                        currentdate,
+                                        thidays,
+                                        price
+                                    )
+                                    Firebase.firestore.collection("Booking").document(bookingid)
+                                        .set(booking)
+                                        .addOnSuccessListener {
+                                            startActivity(
+                                                Intent(
+                                                    this,
+                                                    bookingcompleted::class.java
+                                                )
+                                            )
+
+
+                                        }
+                                }
+                            }
                     }
                     else{
-                        Toast.makeText(this,"Your Space i Alredy Booked ",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this,"Your Space is Already Booked ",Toast.LENGTH_SHORT).show()
                     }
                 }
 

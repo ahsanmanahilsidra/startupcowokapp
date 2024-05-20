@@ -45,7 +45,7 @@ class showqrcode : DialogFragment() {
             for (x in 0 until with )
             {
                 for(y in 0 until high){
-                    bmp.set(x,y,if (bitMatrix[x,y]) Color.BLACK else Color.WHITE)
+                    bmp.set(x,y,if (bitMatrix[x,y])  Color.parseColor("#FF9800") else Color.WHITE)
                 }
             }
             bindingFragment.showqrcode.setImageBitmap(bmp)

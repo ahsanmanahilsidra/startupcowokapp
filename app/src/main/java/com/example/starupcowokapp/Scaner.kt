@@ -102,14 +102,14 @@ class Scaner : AppCompatActivity() {
                                         val currentTime = LocalTime.now()
                                         val formatter = DateTimeFormatter.ofPattern("hh:mm a")
                                         val formattedTime = currentTime.format(formatter)
-                                        val attendance = Attandence(userId, "present", currentDate,formattedTime.toString())
+                                        val attendance = Attandence(userId, "Present", currentDate,formattedTime.toString())
                                         FirebaseFirestore.getInstance().collection("Attandence")
                                             .add(attendance)
                                             .addOnSuccessListener {
                                                 finish()
                                                 Toast.makeText(
                                                     applicationContext,
-                                                    "New attendance document created",
+                                                    "Attendance Marked",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
                                                 vibrateDevice()

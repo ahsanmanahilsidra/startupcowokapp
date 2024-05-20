@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.starupcowokapp.databinding.FragmentSpaceBinding
+import com.google.android.play.integrity.internal.i
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,7 +31,7 @@ bindingFragment.addspace.visibility=View.GONE
                     bindingFragment.addspace.visibility = View.VISIBLE
                 }
             }
-        adapter= SpaceAdapter(requireContext(),spaceList)
+        adapter= SpaceAdapter(requireContext(),spaceList,requireActivity().supportFragmentManager)
         bindingFragment.recilerview.layoutManager=
             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         bindingFragment.recilerview.adapter=adapter

@@ -1,5 +1,7 @@
 package Adopters
 
+import Fragments.CreateEvent
+import Fragments.CreateSpace
 import Models.Event
 import android.content.Context
 import android.content.Intent
@@ -7,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.starupcowokapp.Booking
 import com.example.starupcowokapp.Eventdetail
@@ -17,7 +20,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
-class EventAdopter(var context: Context, var eventlist: ArrayList<Event>):RecyclerView.Adapter<EventAdopter.ViewHolder>(){
+class EventAdopter(var context: Context, var eventlist: ArrayList<Event>,private val fragmentManager: FragmentManager):RecyclerView.Adapter<EventAdopter.ViewHolder>(){
     inner class ViewHolder(var binding: EventHolderBinding) : RecyclerView.ViewHolder(binding.root) {
     }
 
@@ -63,6 +66,11 @@ holder.binding.event.setOnClickListener(View.OnClickListener {
                 .delete().addOnSuccessListener {
                     Toast.makeText(context,"deleted sucessfully", Toast.LENGTH_SHORT).show()
                 }
+        })
+        holder.binding.edit2.setOnClickListener(View.OnClickListener {
+            val eventId = eventlist.get(position).eventid
+            val dialogFragment = CreateEvent.newInstance(eventId)
+            dialogFragment.show(fragmentManager, "YourDialogTag")
         })
     }
 }

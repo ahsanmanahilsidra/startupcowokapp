@@ -4,10 +4,12 @@ import Adopters.Myadapter
 import Models.Space
 import Models.user
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.location.LocationRequest
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -217,49 +219,51 @@ class Home : Fragment(),NavigationView.OnNavigationItemSelectedListener{
 
     }
     private fun startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // Request permissions if not granted
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
+        if (isNetworkConnected()) {
+            if (ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    requireContext(),
                     Manifest.permission.ACCESS_COARSE_LOCATION
-                ),
-                REQUEST_LOCATION_PERMISSION
-            )
-            return
-        }
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                // Got last known location. In some rare situations, this can be null.
-                if (location != null) {
-                    // Reverse geocode to get the city name
-                    val geocoder = Geocoder(requireContext(), Locale.getDefault())
-                    val addresses: List<Address>? =
-                        geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                    addresses?.let {
-                        if (it.isNotEmpty()) {
-                            val cityName = it[0].locality
-                            bindingFragment.location.text = "Location  $cityName"
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Request permissions if not granted
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ),
+                    REQUEST_LOCATION_PERMISSION
+                )
+                return
+            }
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location ->
+                    // Got last known location. In some rare situations, this can be null.
+                    if (location != null) {
+                        // Reverse geocode to get the city name
+                        val geocoder = Geocoder(requireContext(), Locale.getDefault())
+                        val addresses: List<Address>? =
+                            geocoder.getFromLocation(location.latitude, location.longitude, 1)
+                        addresses?.let {
+                            if (it.isNotEmpty()) {
+                                val cityName = it[0].locality
+                                bindingFragment.location.text = "Location  $cityName"
+                            }
                         }
                     }
                 }
-            }
-            .addOnFailureListener { e ->
-                // Handle failure
-                Toast.makeText(
-                    requireContext(),
-                    "Failed to get location: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                .addOnFailureListener { e ->
+                    // Handle failure
+                    Toast.makeText(
+                        requireContext(),
+                        "Failed to get location: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
     }
     // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
@@ -290,5 +294,10 @@ class Home : Fragment(),NavigationView.OnNavigationItemSelectedListener{
             }
         }
     }
-
+    private fun isNetworkConnected(): Boolean {
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
 }

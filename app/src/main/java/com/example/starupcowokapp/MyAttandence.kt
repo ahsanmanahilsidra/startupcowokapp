@@ -17,7 +17,7 @@ import com.google.firebase.firestore.toObject
 
 
 class MyAttandence : AppCompatActivity() {
-    var AttandenceList=ArrayList<Attandence>()
+    var AttandenceList = ArrayList<Attandence>()
     private lateinit var adapter: AttandenceAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         val binding by lazy {
@@ -25,19 +25,35 @@ class MyAttandence : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        adapter= AttandenceAdapter(this,AttandenceList)
-        binding.recyclerView.layoutManager=
+        adapter = AttandenceAdapter(this, AttandenceList)
+        binding.recyclerView.layoutManager =
             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
-        binding.recyclerView.adapter=adapter
-        Firebase.firestore.collection("Attandence").whereEqualTo("userid",Firebase.auth.currentUser!!.uid).get().addOnSuccessListener(){
-            var templist= arrayListOf<Attandence>()
-            for(i in it.documents){
-                var Attandence: Attandence= i.toObject<Attandence>()!!
-                templist.add(Attandence)
+        binding.recyclerView.adapter = adapter
+        Firebase.firestore.collection("Attandence")
+            .whereEqualTo("userid", Firebase.auth.currentUser!!.uid).get().addOnSuccessListener() {
+                var templist = arrayListOf<Attandence>()
+                for (i in it.documents) {
+                    var Attandence: Attandence = i.toObject<Attandence>()!!
+                    templist.add(Attandence)
+
+                    var presentCount = 0
+                    var absentCount = 0
+
+                    for (document in it) {
+                        val attendance = document.toObject<Attandence>()
+
+                        if (attendance.Attandence == "Present") {
+                            presentCount++
+                        } else if (attendance.Attandence == "Absent") {
+                            absentCount++
+                        }
+                        binding.absent.setText(absentCount.toString())
+                        binding.presents.setText(presentCount.toString())
+                    }
+                    templist.reverse()
+                    AttandenceList.addAll(templist)
+                    adapter.notifyDataSetChanged();
+                }
             }
-            templist.reverse()
-            AttandenceList.addAll(templist)
-            adapter.notifyDataSetChanged();
-        }
     }
 }

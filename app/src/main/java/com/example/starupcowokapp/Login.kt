@@ -6,6 +6,9 @@ import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.text.InputType
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -68,5 +71,18 @@ class Login : AppCompatActivity() {
         binding.forgot.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this,forgotpassword::class.java))
         })
+        binding.eye.setOnClickListener {
+            // Change the input type to display the password temporarily
+            binding.password.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+
+            // Invalidate the view to apply the input type change
+            binding.password.invalidate()
+
+            // After 1 second, revert the input type back to password
+            Handler(Looper.getMainLooper()).postDelayed({
+                binding.password.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.password.invalidate()
+            }, 1000)
+        }
     }
 }

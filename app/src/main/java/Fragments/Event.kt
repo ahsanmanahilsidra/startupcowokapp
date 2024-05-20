@@ -32,7 +32,7 @@ class Event : Fragment() {
                 }
             }
         var eventList = ArrayList<Event>()
-        var adapter = EventAdopter(requireContext(), eventList)
+        var adapter = EventAdopter(requireContext(), eventList,requireActivity().supportFragmentManager)
         bindingFragment.recilerview.layoutManager =
             StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
         bindingFragment.recilerview.adapter = adapter

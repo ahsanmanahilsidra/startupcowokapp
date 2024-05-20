@@ -7,6 +7,7 @@
     android:background="@color/white"
     tools:context=".Login">
 
+
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="0dp"
@@ -61,40 +62,50 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/baseline_email_24"
+                android:drawablePadding="10dp"
                 android:drawableTint="@color/dark_orang"
                 android:inputType="textEmailAddress"
-                android:drawablePadding="10dp"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layoutPassword"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:hint="Password">
+            android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutPassword"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/baseline_lock_24"
-                android:drawableTint="@color/dark_orang"
-                android:inputType="textPassword"
-                android:drawablePadding="10dp"
-                android:maxLines="1" />
+                android:layout_marginTop="30dp"
+                android:hint="Password"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/forgot"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginTop="10dp"
-                android:textSize="14sp"
-                android:text="@string/forget_passward"
-                android:textColor="@color/dark_orang" />
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/baseline_lock_24"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/dark_orang"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+                <TextView
+                    android:id="@+id/forgot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-condensed-medium"
+                    android:text="Forgot Password ?"
+                    android:textColor="@color/orange"
+                    android:textSize="14sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Password -->
+
 
         <!-- Confirm Password -->
         <com.google.android.material.textfield.TextInputLayout
@@ -163,9 +174,9 @@
 
             <TextView
                 android:id="@+id/signup"
-                android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:text="@string/create_account"
                 android:textColor="@color/orange"
                 android:textSize="17sp"
@@ -174,4 +185,14 @@
 
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/eye"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="321dp"
+        android:layout_marginEnd="32dp"
+        android:src="@drawable/ic_baseline_eye_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

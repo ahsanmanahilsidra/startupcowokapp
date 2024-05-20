@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, Login::class.java))
+            startActivity(Intent(this, ACTIVITY_ONBOARDING1::class.java))
             if (FirebaseAuth.getInstance().currentUser==null) {
 
             }else

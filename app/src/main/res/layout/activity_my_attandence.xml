@@ -11,7 +11,6 @@
         android:id="@+id/toolbar5"
         android:layout_width="399dp"
         android:layout_height="46dp"
-        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -26,9 +25,10 @@
     </androidx.appcompat.widget.Toolbar>
 
     <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey"
+        android:background="@color/light_white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,7 +52,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Date"
@@ -65,10 +65,10 @@
         android:id="@+id/textView26"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Time"
         android:gravity="center"
+        android:text="Time"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/textView27"
         app:layout_constraintStart_toEndOf="@+id/textView3"
@@ -78,7 +78,7 @@
         android:id="@+id/textView27"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
@@ -87,4 +87,54 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView26"
         app:layout_constraintTop_toBottomOf="@+id/toolbar5" />
+
+    <TextView
+        android:id="@+id/textView40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="17dp"
+        android:text="Total presents"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/presents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="17dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="@color/textcolor"
+        app:layout_constraintStart_toEndOf="@+id/textView40"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/textView42"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="8dp"
+        android:text="Total Absents"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif-condensed-medium"
+        app:layout_constraintEnd_toStartOf="@+id/absent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/absent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="24dp"
+        android:text="TextView"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="18sp"
+        android:textColor="@color/textcolor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
